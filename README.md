@@ -2,6 +2,9 @@
 
 A calm Chrome extension for saving, revisiting, and sharing the things you mean to read. The aesthetic is nature-quiet — warm parchment, moss green, soft terracotta, a serif for titles.
 
+**Share viewer:** <https://jonnonz1.github.io/read-later/share/viewer.html>
+**Privacy policy:** <https://github.com/jonnonz1/read-later/blob/main/PRIVACY.md>
+
 ## Features
 
 - **Quick save** — toolbar popup pre-fills the current tab's title and URL. Add tags, save, done.

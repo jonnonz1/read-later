@@ -100,15 +100,10 @@ This is where reviews get stuck most often. Fill it in carefully.
 - [x] I do not use or transfer user data to determine creditworthiness or for lending purposes.
 
 **Privacy policy URL**
-Required even though you collect nothing. Create a `PRIVACY.md` in a public GitHub repo and use its raw URL, or host anywhere. Minimal acceptable text:
 
-```
-Privacy policy for Read Later
+Use the GitHub-rendered page (nicely formatted for reviewers):
 
-Read Later stores your reading list locally in your browser using the chrome.storage.local API. No data is collected, transmitted, or shared with any server. The extension does not use analytics, tracking, or external services, with one exception: when a saved page did not supply a favicon, the extension requests a public favicon image from Google's favicon service (https://www.google.com/s2/favicons) using only the domain name of the saved page.
-
-Shared links carry reading-list data in the URL fragment (the part after #). URL fragments are never sent to any server by browsers.
-```
+> <https://github.com/jonnonz1/read-later/blob/main/PRIVACY.md>
 
 ## 6. Visibility and distribution
 
