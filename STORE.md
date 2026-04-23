@@ -17,18 +17,16 @@ A step-by-step checklist with the exact copy you'll need for each field.
 
 ## 2. Package the extension
 
-From the `read-later/` folder:
+From the repo root:
 
 ```bash
-zip -r ../read-later.zip . \
-  -x "*.DS_Store" \
-  -x "icons/build-icons.html" \
-  -x "icons/icon.svg" \
-  -x "STORE.md" \
-  -x "README.md"
+./scripts/package.sh
 ```
 
-The resulting `read-later.zip` is what you upload.
+This produces `read-later-v<version>.zip` using a whitelist of only the runtime
+files. Nothing else — git metadata, marketing assets, docs, icon source — can
+slip in. The script reads the version straight from `manifest.json`, so every
+build is named after the version you're submitting.
 
 ## 3. Store listing — copy to paste in
 
@@ -131,8 +129,9 @@ First-time reviews typically take 1–3 business days. Updates are often same-da
 ## 9. Ongoing: versioning
 
 ```bash
-# bump manifest.json "version" → rebuild zip → upload
-zip -r ../read-later.zip . -x "*.DS_Store" "icons/build-icons.html" "icons/icon.svg" "STORE.md" "README.md"
+# bump "version" in manifest.json, then:
+./scripts/package.sh
+# upload the new read-later-v<version>.zip
 ```
 
 A small `CHANGELOG.md` helps reviewers and users understand what changed.
