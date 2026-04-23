@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Popup</title>
+    <link rel="stylesheet" href="_shared.css" />
+    <style>
+      body { width: 1280px; height: 800px; display: grid; place-items: center; position: relative; }
+      .stage { position: relative; width: 100%; height: 100%; display: grid; place-items: center; }
+      .copy { position: absolute; left: 80px; top: 120px; max-width: 420px; z-index: 2; }
+      .copy h2 { font-family: var(--serif); font-size: 40px; font-weight: 500; margin: 0 0 12px; color: var(--ink); line-height: 1.15; }
+      .copy p { color: var(--ink-soft); font-size: 17px; margin: 0 0 18px; line-height: 1.55; }
+      .kbd { display: inline-block; font-family: ui-monospace, monospace; font-size: 13px; background: var(--bg-raised); border: 1px solid var(--line-strong); border-bottom-width: 2px; border-radius: 5px; padding: 2px 8px; color: var(--ink-soft); }
+      .popup-wrap { position: absolute; right: 100px; top: 90px; width: 392px; transform: rotate(1.2deg); filter: drop-shadow(0 20px 40px rgba(60, 70, 50, 0.15)); }
+      .popup-card { width: 360px; padding: 16px; background: var(--bg); border-radius: 12px; }
+      .card-inner { background: var(--bg-raised); border: 1px solid var(--line); border-radius: 10px; padding: 18px; box-shadow: var(--shadow); }
+      .masthead { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 16px; }
+      .masthead .leaf { width: 28px; height: 28px; margin-top: 2px; }
+      .masthead h1 { font-size: 20px; }
+      .masthead .subtitle { font-size: 12px; }
+      .field { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+      .label { font-size: 11px; font-weight: 500; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.06em; }
+      .field input { font-family: inherit; font-size: 13px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; }
+      .actions { display: flex; gap: 8px; margin-top: 10px; }
+      .actions .primary { flex: 1; }
+      .actions button { font-size: 13px; padding: 9px 14px; }
+      .recent { margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--line); }
+      .recent h2 { font-family: var(--serif); font-size: 13px; color: var(--ink-soft); margin: 0 0 8px; font-weight: 500; }
+      .recent ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+      .recent li { display: flex; gap: 8px; align-items: center; padding: 6px 8px; font-size: 12.5px; color: var(--ink); }
+      .recent .fav { width: 14px; height: 14px; background: var(--bg-sunk); border-radius: 2px; flex-shrink: 0; }
+    </style>
+  </head>
+  <body>
+    <div class="watermarks"></div>
+    <div class="stage">
+      <div class="copy">
+        <h2>One click to tuck it away.</h2>
+        <p>The popup pre-fills the page you're reading. Add a tag if you like, save it, and move on.</p>
+        <p><span class="kbd">⌘</span> <span class="kbd">Shift</span> <span class="kbd">L</span> &nbsp; saves without opening the popup.</p>
+      </div>
+
+      <div class="popup-wrap">
+        <div class="popup-card">
+          <div class="card-inner">
+            <div class="masthead">
+              <svg class="leaf" viewBox="0 0 24 24"><path d="M20 4c-8 0-14 5-14 12 0 1.3.3 2.6.8 3.7C9 15 14 11 20 10c-4 2-7 5-9 10 6 0 11-4 11-11V4z"/></svg>
+              <div>
+                <h1>Read later</h1>
+                <p class="subtitle">A quiet shelf for what you meant to read.</p>
+              </div>
+            </div>
+            <div class="field">
+              <span class="label">Title</span>
+              <input value="The Joy of Slow Reading" />
+            </div>
+            <div class="field">
+              <span class="label">Link</span>
+              <input value="https://literaryhub.com/slow-reading" />
+            </div>
+            <div class="field">
+              <span class="label">Tags <span style="color: var(--ink-faint); font-weight: 400; text-transform: none; letter-spacing: 0;">comma separated</span></span>
+              <input value="essay, reading" />
+            </div>
+            <div class="actions">
+              <button class="primary">Tuck it away</button>
+              <button class="ghost">Open shelf</button>
+            </div>
+            <div class="recent">
+              <h2>Recently saved</h2>
+              <ul>
+                <li><div class="fav"></div>A Naturalist's Guide to Lichen</li>
+                <li><div class="fav"></div>How to Keep a Garden Journal</li>
+                <li><div class="fav"></div>Why We Walk Outside</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

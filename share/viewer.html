@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>A shared reading list</title>
+    <style>
+      :root {
+        --bg: #f4efe3;
+        --bg-raised: #fbf7ec;
+        --ink: #2a2f29;
+        --ink-soft: #5c6458;
+        --ink-faint: #8a907f;
+        --line: #e1dccb;
+        --line-strong: #cdc8b5;
+        --moss: #5c7a4f;
+        --moss-deep: #3f5a34;
+        --moss-tint: #e5ecdd;
+        --terracotta: #b3694a;
+        --terracotta-tint: #f1dfd4;
+        --shadow-sm: 0 1px 2px rgba(60, 70, 50, 0.05);
+        --shadow: 0 1px 2px rgba(60, 70, 50, 0.05), 0 8px 24px rgba(60, 70, 50, 0.06);
+        --serif: "Iowan Old Style", "Palatino", "Georgia", ui-serif, serif;
+        --sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #161c17;
+          --bg-raised: #1e2620;
+          --ink: #e8e4d6;
+          --ink-soft: #b5b4a4;
+          --ink-faint: #7d8375;
+          --line: #2c342c;
+          --line-strong: #3d4639;
+          --moss: #9ab58a;
+          --moss-deep: #bcd2a8;
+          --moss-tint: #283423;
+          --terracotta: #d8906f;
+          --terracotta-tint: #3b2a22;
+          --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
+          --shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+      body::before { content: ""; position: fixed; inset: 0; background: radial-gradient(1200px 500px at 15% -10%, var(--moss-tint), transparent 60%), radial-gradient(1000px 500px at 110% 10%, var(--terracotta-tint), transparent 60%); opacity: 0.55; pointer-events: none; z-index: 0; }
+      .page { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 48px 24px 64px; }
+      .brand { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 24px; }
+      .leaf { width: 36px; height: 36px; fill: var(--moss); transform: rotate(-8deg); margin-top: 4px; flex-shrink: 0; }
+      h1 { font-family: var(--serif); font-weight: 500; font-size: 28px; margin: 0; letter-spacing: 0.2px; }
+      .subtitle { margin: 2px 0 0; color: var(--ink-faint); font-style: italic; font-size: 14px; }
+      .actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 28px; }
+      button { font-family: inherit; font-size: 13px; font-weight: 500; padding: 8px 14px; border-radius: 6px; cursor: pointer; transition: background 140ms, color 140ms, border-color 140ms, transform 80ms; border: 1px solid var(--line); }
+      button:active { transform: translateY(1px); }
+      .primary { background: var(--moss); color: #fbf7ec; border-color: var(--moss-deep); }
+      .primary:hover { background: var(--moss-deep); }
+      .ghost { background: transparent; color: var(--ink-soft); }
+      .ghost:hover { color: var(--ink); background: var(--bg-raised); border-color: var(--line-strong); }
+      .list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+      .item { background: var(--bg-raised); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; box-shadow: var(--shadow-sm); animation: settle 260ms ease-out; }
+      @keyframes settle { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+      .item a { font-family: var(--serif); font-size: 17px; font-weight: 500; color: var(--ink); text-decoration: none; line-height: 1.35; display: inline-block; word-break: break-word; }
+      .item a:hover { color: var(--moss-deep); text-decoration: underline; text-decoration-color: var(--moss); text-underline-offset: 3px; }
+      .meta { margin-top: 6px; font-size: 12.5px; color: var(--ink-faint); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+      .host { color: var(--ink-soft); }
+      .tag { background: var(--moss-tint); color: var(--moss-deep); padding: 1px 7px; border-radius: 999px; font-size: 11.5px; }
+      .footer { margin-top: 40px; padding-top: 20px; border-top: 1px dashed var(--line); color: var(--ink-faint); font-size: 12.5px; text-align: center; }
+      .footer a { color: var(--moss-deep); }
+      .error { background: var(--terracotta-tint); color: var(--terracotta); padding: 16px; border-radius: 8px; font-size: 14px; }
+      .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(10px); background: var(--moss-deep); color: #fbf7ec; padding: 10px 16px; border-radius: 999px; font-size: 13px; box-shadow: var(--shadow); opacity: 0; transition: opacity 180ms, transform 180ms; z-index: 10; pointer-events: none; }
+      .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+      .hint { font-size: 12.5px; color: var(--ink-faint); margin: 0 0 16px; }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="brand">
+        <svg class="leaf" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20 4c-8 0-14 5-14 12 0 1.3.3 2.6.8 3.7C9 15 14 11 20 10c-4 2-7 5-9 10 6 0 11-4 11-11V4z" />
+        </svg>
+        <div>
+          <h1 id="title">A shared reading list</h1>
+          <p class="subtitle">Someone thought you'd like these.</p>
+        </div>
+      </div>
+
+      <div class="actions" id="actions" hidden>
+        <button class="primary" id="add-btn" hidden>Add all to my shelf</button>
+        <button class="ghost" id="copy-md">Copy as Markdown</button>
+        <button class="ghost" id="copy-json">Copy as JSON</button>
+      </div>
+      <p class="hint" id="install-hint" hidden>
+        Install the Read Later extension, then paste the copied JSON into Import to save these.
+      </p>
+
+      <ul class="list" id="list"></ul>
+      <div class="error" id="error" hidden></div>
+
+      <div class="footer">
+        Shared via <a href="#" id="project-link">Read Later</a>. Your copy of this list stays private — the link's data never leaves your browser.
+      </div>
+    </div>
+
+    <div class="toast" id="toast" hidden></div>
+
+    <script type="module">
+      // This viewer page is intentionally self-contained so it can be hosted
+      // as a single file on any static host (GitHub Pages, Netlify, etc).
+
+      const PAYLOAD_VERSION = 1;
+
+      function fromBase64Url(s) {
+        s = s.replace(/-/g, "+").replace(/_/g, "/");
+        while (s.length % 4) s += "=";
+        const bin = atob(s);
+        const bytes = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+        return bytes;
+      }
+
+      async function gunzip(bytes) {
+        const stream = new Blob([bytes])
+          .stream()
+          .pipeThrough(new DecompressionStream("gzip"));
+        return await new Response(stream).text();
+      }
+
+      async function decodePayload(payload) {
+        const bytes = fromBase64Url(payload);
+        const json = await gunzip(bytes);
+        const doc = JSON.parse(json);
+        if (doc.v !== PAYLOAD_VERSION) throw new Error("Unsupported share format");
+        const items = (doc.i || []).map((i) => ({
+          url: i.u,
+          title: i.t || i.u,
+          tags: i.g || [],
+        }));
+        return { title: doc.n || "", items };
+      }
+
+      function host(url) {
+        try {
+          return new URL(url).hostname.replace(/^www\./, "");
+        } catch {
+          return url;
+        }
+      }
+
+      function flash(msg) {
+        const toast = document.getElementById("toast");
+        toast.textContent = msg;
+        toast.hidden = false;
+        requestAnimationFrame(() => toast.classList.add("show"));
+        setTimeout(() => {
+          toast.classList.remove("show");
+          setTimeout(() => (toast.hidden = true), 200);
+        }, 1800);
+      }
+
+      function render(items) {
+        const ul = document.getElementById("list");
+        ul.innerHTML = "";
+        for (const item of items) {
+          const li = document.createElement("li");
+          li.className = "item";
+          const a = document.createElement("a");
+          a.href = item.url;
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+          a.textContent = item.title;
+          const meta = document.createElement("div");
+          meta.className = "meta";
+          const h = document.createElement("span");
+          h.className = "host";
+          h.textContent = host(item.url);
+          meta.append(h);
+          if (item.tags?.length) {
+            const dot = document.createElement("span");
+            dot.textContent = "·";
+            dot.style.opacity = 0.5;
+            meta.append(dot);
+            for (const t of item.tags) {
+              const tag = document.createElement("span");
+              tag.className = "tag";
+              tag.textContent = t;
+              meta.append(tag);
+            }
+          }
+          li.append(a, meta);
+          ul.append(li);
+        }
+      }
+
+      function toMarkdown(items, title) {
+        const heading = `## ${title || "A shared reading list"}`;
+        const lines = items.map((i) => {
+          const tags = i.tags?.length ? ` _(${i.tags.join(", ")})_` : "";
+          return `- [${i.title}](${i.url})${tags}`;
+        });
+        return `${heading}\n\n${lines.join("\n")}\n`;
+      }
+
+      function toJson(items) {
+        return JSON.stringify(
+          {
+            version: 1,
+            items: items.map((i) => ({
+              url: i.url,
+              title: i.title,
+              tags: i.tags,
+              addedAt: Date.now(),
+            })),
+          },
+          null,
+          2,
+        );
+      }
+
+      async function init() {
+        const fragment = location.hash.slice(1);
+        const errorEl = document.getElementById("error");
+        const actions = document.getElementById("actions");
+
+        if (!fragment) {
+          errorEl.textContent = "This link doesn't include any reading-list data.";
+          errorEl.hidden = false;
+          return;
+        }
+
+        let decoded;
+        try {
+          decoded = await decodePayload(fragment);
+        } catch (err) {
+          console.error(err);
+          errorEl.textContent = "Couldn't read this link — it may be corrupted or from a newer version.";
+          errorEl.hidden = false;
+          return;
+        }
+
+        if (decoded.title) {
+          document.getElementById("title").textContent = decoded.title;
+        } else if (decoded.items.length === 1) {
+          document.getElementById("title").textContent = decoded.items[0].title;
+        }
+
+        render(decoded.items);
+        actions.hidden = false;
+
+        // If we're running inside the extension, we can import directly.
+        const insideExtension =
+          typeof chrome !== "undefined" &&
+          chrome.storage &&
+          location.protocol === "chrome-extension:";
+
+        const addBtn = document.getElementById("add-btn");
+        const installHint = document.getElementById("install-hint");
+
+        if (insideExtension) {
+          addBtn.hidden = false;
+          const { importItems } = await import("../lib/storage.js");
+          addBtn.addEventListener("click", async () => {
+            const payload = decoded.items.map((i) => ({
+              url: i.url,
+              title: i.title,
+              tags: i.tags,
+              addedAt: Date.now(),
+            }));
+            const added = await importItems(payload);
+            flash(
+              added
+                ? `Added ${added} ${added === 1 ? "item" : "items"} to your shelf`
+                : "These are already on your shelf",
+            );
+          });
+        } else {
+          installHint.hidden = false;
+        }
+
+        document.getElementById("copy-md").addEventListener("click", async () => {
+          await navigator.clipboard.writeText(toMarkdown(decoded.items, decoded.title));
+          flash("Copied as Markdown");
+        });
+
+        document.getElementById("copy-json").addEventListener("click", async () => {
+          await navigator.clipboard.writeText(toJson(decoded.items));
+          flash("Copied as JSON");
+        });
+      }
+
+      init();
+    </script>
+  </body>
+</html>

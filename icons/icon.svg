@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="moss" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7a9668" />
+      <stop offset="1" stop-color="#3f5a34" />
+    </linearGradient>
+    <linearGradient id="paper" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fbf7ec" />
+      <stop offset="1" stop-color="#ede7d6" />
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="26" fill="url(#paper)" />
+  <path d="M26 98 V34 a10 10 0 0 1 10-10 h46 a10 10 0 0 1 10 10 v58 l-14-10 -14 10 -14-10 -14 10 -10 6z"
+        fill="#fff8e6" stroke="#cdc8b5" stroke-width="2" stroke-linejoin="round" />
+  <path d="M108 20c-30 0-52 18-52 44 0 5 1 10 3 14 10-18 28-34 48-40-14 6-26 18-33 35 22 0 41-15 41-41V20z"
+        fill="url(#moss)" />
+  <path d="M78 66 q14-10 28-38" fill="none" stroke="#ede7d6" stroke-width="2.5" stroke-linecap="round" opacity="0.5" />
+</svg>

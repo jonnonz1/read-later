@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Your reading shelf</title>
+    <link rel="stylesheet" href="reader.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="page-header">
+        <div class="brand">
+          <svg class="leaf" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 4c-8 0-14 5-14 12 0 1.3.3 2.6.8 3.7C9 15 14 11 20 10c-4 2-7 5-9 10 6 0 11-4 11-11V4z" />
+          </svg>
+          <div>
+            <h1>Reading shelf</h1>
+            <p id="subtitle" class="subtitle">Set down. Return when the light is right.</p>
+          </div>
+        </div>
+        <nav class="top-actions">
+          <button class="ghost" id="share-link-btn" title="Generate a shareable URL for the visible list">Share link</button>
+          <button class="ghost" id="share-md-btn" title="Copy the whole shelf as Markdown">Copy as Markdown</button>
+          <button class="ghost" id="export-btn" title="Download a JSON backup">Export</button>
+          <label class="ghost file-btn" title="Import a JSON file">
+            Import
+            <input type="file" id="import-input" accept="application/json" hidden />
+          </label>
+        </nav>
+      </header>
+
+      <section class="controls">
+        <input
+          id="search"
+          type="search"
+          placeholder="Search titles, tags, notes..."
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <div class="filters">
+          <button class="chip" data-filter="unread" aria-pressed="true">Unread</button>
+          <button class="chip" data-filter="read">Read</button>
+          <button class="chip" data-filter="archived">Archived</button>
+          <button class="chip" data-filter="all">All</button>
+        </div>
+        <div class="tag-row" id="tag-row"></div>
+      </section>
+
+      <section id="list-wrap">
+        <ul id="list" class="item-list"></ul>
+        <div id="empty" class="empty" hidden>
+          <svg class="empty-leaf" viewBox="0 0 60 60" aria-hidden="true">
+            <path d="M50 10c-20 0-35 12-35 30 0 3 .7 6 2 8.5C21 35 33 25 48 23c-9 5-17 12-22 25 15 0 27-10 27-27V10z" />
+          </svg>
+          <p id="empty-msg">Nothing here yet. Save a page to begin.</p>
+        </div>
+      </section>
+
+      <footer class="page-footer">
+        <span id="stats"></span>
+        <button class="link-btn" id="clear-archive">Clear archived</button>
+      </footer>
+    </div>
+
+    <dialog id="share-dialog" class="dialog">
+      <form method="dialog">
+        <h3 id="share-dialog-heading">Share this article</h3>
+        <p class="dialog-sub" id="share-dialog-title"></p>
+
+        <label class="label">Shareable link</label>
+        <textarea id="share-link" readonly rows="3"></textarea>
+        <p class="share-note" id="share-note"></p>
+
+        <label class="label">Plain text</label>
+        <textarea id="share-text" readonly rows="3"></textarea>
+
+        <div class="dialog-actions">
+          <button value="copy-link" class="primary" type="button" id="share-copy-link">Copy link</button>
+          <button value="copy-text" class="ghost" type="button" id="share-copy-text">Copy text</button>
+          <button value="close" class="ghost">Close</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div id="toast" class="toast" hidden></div>
+
+    <script type="module" src="reader.js"></script>
+  </body>
+</html>

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Shared viewer</title>
+    <link rel="stylesheet" href="_shared.css" />
+    <style>
+      body { width: 1280px; height: 800px; }
+      .page { max-width: 720px; }
+      .hero { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 16px; }
+      .hero h1 { font-size: 28px; }
+      .actions-row { display: flex; gap: 8px; margin: 18px 0 28px; }
+      .viewer-item a { text-decoration: none; font-family: var(--serif); font-size: 17px; font-weight: 500; color: var(--ink); }
+      .footer-note { margin-top: 28px; padding-top: 20px; border-top: 1px dashed var(--line); color: var(--ink-faint); font-size: 12.5px; text-align: center; }
+    </style>
+  </head>
+  <body>
+    <div class="watermarks"></div>
+    <div class="page">
+      <div class="hero">
+        <svg class="leaf" viewBox="0 0 24 24" width="36" height="36"><path d="M20 4c-8 0-14 5-14 12 0 1.3.3 2.6.8 3.7C9 15 14 11 20 10c-4 2-7 5-9 10 6 0 11-4 11-11V4z"/></svg>
+        <div>
+          <h1>Sunday reading — from John</h1>
+          <p class="subtitle">Someone thought you'd like these.</p>
+        </div>
+      </div>
+
+      <div class="actions-row">
+        <button class="primary">Add all to my shelf</button>
+        <button class="ghost">Copy as Markdown</button>
+        <button class="ghost">Copy as JSON</button>
+      </div>
+
+      <ul class="item-list" id="list"></ul>
+
+      <div class="footer-note">
+        Shared via <strong>Read Later</strong>. Your copy of this list stays private — the link's data never leaves your browser.
+      </div>
+    </div>
+
+    <script type="module">
+      import { SAMPLE } from "./_data.js";
+      const ul = document.getElementById("list");
+      for (const s of SAMPLE.slice(0, 5)) {
+        const li = document.createElement("li");
+        li.className = "item viewer-item";
+        li.innerHTML = `
+          <a>${s.title}</a>
+          <div class="meta">
+            <span class="host">${s.host}</span>
+            <span class="dot">·</span>
+            <span class="tags">${s.tags.map(t => `<span class="tag">${t}</span>`).join(" ")}</span>
+          </div>`;
+        ul.append(li);
+      }
+    </script>
+  </body>
+</html>

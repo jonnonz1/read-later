@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Build icons</title>
+    <style>
+      body { font-family: -apple-system, sans-serif; padding: 24px; background: #f4efe3; color: #2a2f29; }
+      h1 { font-family: Georgia, serif; font-weight: 500; }
+      .row { display: flex; gap: 16px; align-items: center; margin: 12px 0; }
+      canvas { background: #fff; border: 1px solid #e1dccb; border-radius: 6px; }
+      button { padding: 8px 14px; border-radius: 6px; border: 1px solid #5c7a4f; background: #5c7a4f; color: white; cursor: pointer; }
+    </style>
+  </head>
+  <body>
+    <h1>Build PNG icons</h1>
+    <p>Click the button, then save each download into this <code>icons/</code> folder.</p>
+    <button id="build">Generate and download</button>
+    <div id="out"></div>
+
+    <script>
+      const SIZES = [16, 32, 48, 128];
+      document.getElementById("build").addEventListener("click", async () => {
+        const svgText = await (await fetch("icon.svg")).text();
+        const blob = new Blob([svgText], { type: "image/svg+xml" });
+        const url = URL.createObjectURL(blob);
+        const img = new Image();
+        img.onload = () => {
+          for (const size of SIZES) {
+            const c = document.createElement("canvas");
+            c.width = c.height = size;
+            const ctx = c.getContext("2d");
+            ctx.drawImage(img, 0, 0, size, size);
+            c.toBlob((b) => {
+              const a = document.createElement("a");
+              a.href = URL.createObjectURL(b);
+              a.download = `icon-${size}.png`;
+              a.click();
+            }, "image/png");
+            const row = document.createElement("div");
+            row.className = "row";
+            row.append(c, Object.assign(document.createElement("span"), { textContent: `icon-${size}.png` }));
+            document.getElementById("out").append(row);
+          }
+          URL.revokeObjectURL(url);
+        };
+        img.src = url;
+      });
+    </script>
+  </body>
+</html>

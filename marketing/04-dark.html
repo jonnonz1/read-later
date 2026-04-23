@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <title>Dark shelf</title>
+    <link rel="stylesheet" href="_shared.css" />
+    <style>
+      body { width: 1280px; height: 800px; }
+    </style>
+  </head>
+  <body>
+    <div class="watermarks"></div>
+    <div class="page">
+      <header class="page-header">
+        <div class="brand">
+          <svg class="leaf" viewBox="0 0 24 24" width="36" height="36"><path d="M20 4c-8 0-14 5-14 12 0 1.3.3 2.6.8 3.7C9 15 14 11 20 10c-4 2-7 5-9 10 6 0 11-4 11-11V4z"/></svg>
+          <div>
+            <h1>Reading shelf</h1>
+            <p class="subtitle">Rest your eyes here.</p>
+          </div>
+        </div>
+        <nav class="top-actions">
+          <button class="ghost">Share link</button>
+          <button class="ghost">Copy as Markdown</button>
+          <button class="ghost">Export</button>
+          <button class="ghost">Import</button>
+        </nav>
+      </header>
+
+      <section class="controls">
+        <input class="search" type="search" placeholder="Search titles, tags, notes..." value="nature" />
+        <div class="filters">
+          <button class="chip">Unread</button>
+          <button class="chip">Read</button>
+          <button class="chip">Archived</button>
+          <button class="chip pressed">All</button>
+        </div>
+        <div class="tag-row">
+          <button class="chip"># essay</button>
+          <button class="chip"># gardening</button>
+          <button class="chip active"># nature</button>
+          <button class="chip"># outdoors</button>
+        </div>
+      </section>
+
+      <ul class="item-list" id="list"></ul>
+
+      <footer class="page-footer">
+        <span>3 unread · 3 total</span>
+        <span style="color: var(--ink-faint);">Clear archived</span>
+      </footer>
+    </div>
+
+    <script type="module">
+      import { SAMPLE } from "./_data.js";
+      const ul = document.getElementById("list");
+      const items = SAMPLE.filter(s => s.tags.includes("nature"));
+      for (const s of items) {
+        const li = document.createElement("li");
+        li.className = "item" + (s.read ? " read" : "");
+        li.innerHTML = `
+          <div class="item-head">
+            <div class="favicon"></div>
+            <div class="item-body">
+              <a class="title-link">${s.title}</a>
+              <div class="meta">
+                <span class="host">${s.host}</span>
+                <span class="dot">·</span>
+                <span>${s.time}</span>
+                <span class="dot">·</span>
+                <span class="tags">${s.tags.map(t => `<span class="tag">${t}</span>`).join(" ")}</span>
+              </div>
+              <div class="item-actions">
+                <span class="link-btn">Mark ${s.read ? "unread" : "read"}</span>
+                <span class="link-btn">Archive</span>
+                <span class="link-btn">Share</span>
+                <span class="link-btn">Copy link</span>
+                <span class="link-btn">Delete</span>
+              </div>
+            </div>
+          </div>`;
+        ul.append(li);
+      }
+    </script>
+  </body>
+</html>
